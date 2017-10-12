@@ -37,7 +37,14 @@ github: githubuser/bob
 library:
   dependencies:
   - base
+  - turtle
+  - mtl
+  - text
+  - directory
   source-dirs: library
+  default-extensions:
+    - OverloadedStrings
+    - DuplicateRecordFields
 license: MIT
 maintainer: Author name here
 name: bob
