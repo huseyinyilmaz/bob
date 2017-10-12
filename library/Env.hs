@@ -7,7 +7,7 @@ import Turtle
 import qualified Data.Text as Text
 import System.Environment (lookupEnv)
 import Data.Monoid(First(..), (<>))
-import Data.Maybe(fromJust)
+import Data.Maybe(fromJust, fromMaybe)
 
 command :: Parser BobInput
 command = BobInput <$>
@@ -23,14 +23,17 @@ command = BobInput <$>
 getEnvironment :: Text -> IO BobEnv
 getEnvironment n = do
   maybeOwner <- lookupEnvText "BOB_DOCKER_OWNER"
-  putStrLn ("Attempting to get url from environment variable " <> (Text.unpack varName))
-  bobRepoUrl <- lookupEnvText $ Text.unpack $ varName
+  maybeDockerFilePath <- lookupEnvText (Text.unpack dockerFilePathVarName)
+  putStrLn ("Attempting to get url from environment variable " <> (Text.unpack repoVarName))
+  bobRepoUrl <- lookupEnvText $ Text.unpack $ repoVarName
   return BobEnv {
     repoUrl=bobRepoUrl,
-    dockerOwner=maybeOwner
+    dockerOwner=maybeOwner,
+    dockerFilePath=(fromMaybe n maybeDockerFilePath)
     }
   where
-    varName = "BOB_" <> (Text.toUpper n) <> "_REPO_URL"
+    repoVarName = "BOB_" <> (Text.toUpper n) <> "_REPO_URL"
+    dockerFilePathVarName = "BOB_" <> (Text.toUpper n) <> "_DOCKER_FILE_PATH"
     lookupEnvText = (fmap (fmap Text.pack)) . lookupEnv
 
 
@@ -53,4 +56,4 @@ readData = do
       bobDockerTag = getFirstMaybe (dockerTag bobCommand) (Just bobBranch)
       bobDockerOwner = getFirstMaybe (dockerOwner (bobCommand::BobInput)) (dockerOwner (bobEnv::BobEnv))
       dockerRepo = bobDockerOwner <> "/" <> bobDockerName <> ":" <> bobDockerTag
-  buildRepo bobName bobBranch bobRepoUrl dockerRepo (pushFlag bobCommand)
+  buildRepo bobName bobBranch bobRepoUrl dockerRepo (dockerFilePath bobEnv) (pushFlag bobCommand)

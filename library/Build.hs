@@ -28,14 +28,14 @@ dockerBuild dockerUrl = stdout $ inproc "docker" ["build", ".", "--tag=" <> dock
 dockerPush :: Text -> IO()
 dockerPush dockerUrl = stdout $ inproc "docker" ["push", dockerUrl] empty
 
-buildRepo :: Text -> Text -> Text -> Text -> Bool -> IO ()
-buildRepo name branch repoUrl dockerUrl pushFlag = do
+buildRepo :: Text -> Text -> Text -> Text -> Text  -> Bool -> IO ()
+buildRepo name branch repoUrl dockerUrl dockerFilePath pushFlag = do
   homeDir <- getHomeDirectory
-  let buildDir = fromString homeDir </> "build"
-      projectDir = buildDir </> (toFilePath name)
+  let buildDir = fromString homeDir </> "build" </> (toFilePath name)
+      projectDir = buildDir </> (toFilePath dockerFilePath)
   echoSummary
+  rmIfExists buildDir
   mktree buildDir
-  rmIfExists projectDir
   cd buildDir
   gitClone repoUrl
   cd projectDir

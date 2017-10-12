@@ -30,5 +30,6 @@ data BobInput = BobInput {
 
 data BobEnv = BobEnv {
   repoUrl :: Maybe Text,
-  dockerOwner :: Maybe Text
+  dockerOwner :: Maybe Text,
+  dockerFilePath :: Text
   } deriving (Show, Eq, Ord)
