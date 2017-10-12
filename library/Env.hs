@@ -39,7 +39,7 @@ getEnvironment n = do
 
 
 description :: Description
-description = "This is bob description"
+description = "Bob the container builder. Bob downloads git repos, build docker images and pushes them to dockerhub."
 
 getFirstMaybe :: Maybe a -> Maybe a -> a
 getFirstMaybe a b = fromJust $ getFirst $ First a <> First b
