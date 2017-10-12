@@ -30,10 +30,13 @@ extra-source-files:
 - CHANGELOG.md
 - LICENSE.md
 - package.yaml
-- README.md
+- README.rst
 - stack.yaml
 ghc-options: -Wall
 github: githubuser/bob
+default-extensions:
+  - OverloadedStrings
+  - DuplicateRecordFields
 library:
   dependencies:
   - base
@@ -42,9 +45,6 @@ library:
   - text
   - directory
   source-dirs: library
-  default-extensions:
-    - OverloadedStrings
-    - DuplicateRecordFields
 license: MIT
 maintainer: Author name here
 name: bob
