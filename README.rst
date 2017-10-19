@@ -57,7 +57,7 @@ In .bash_profile:
    # I am assuming that Dockerfile is in config folder
    $ BOB_MYPROJECT_DOCKER_FILE_PATH=myproject/config
 
- After this configuration I can do following calls
+With this configuration, I can do following calls:
 
 ::
 
