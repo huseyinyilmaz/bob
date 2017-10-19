@@ -40,9 +40,9 @@ All the arguments except name and branch can also be provided with environment v
 
 following are the environment variables you want to set.
 
-BOB_DOCKER_OWNER = default --docker-owner argument
-BOB_<name>_REPO_URL = Repository url for given project <name> will be replaced with uppercase of --name argument from command line.
-BOB_DOCKER_FILE_PATH = Docker file path. default is root directory. For instance, if your dockerfile is in ./project/ subdirectory you need to set this variable as "<name>/project"
+- BOB_DOCKER_OWNER = default --docker-owner argument
+- BOB_<name>_REPO_URL = Repository url for given project <name> will be replaced with uppercase of --name argument from command line.
+- BOB_DOCKER_FILE_PATH = Docker file path. default is root directory. For instance, if your dockerfile is in ./project/ subdirectory you need to set this variable as "<name>/project"
 
 Sample configuration.
 ---------------------
