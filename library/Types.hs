@@ -8,7 +8,6 @@ import Data.Text (Text)
 -- name BOB_NAME
 -- branch BOB_BRANCH
 -- repo-owner BOB_REPO_OWNER
--- repo-type (github / bitbucket) BOB_REPO_TYPE
 -- repo-url (BOB_REPO_URL)
 
 -- Output fields
