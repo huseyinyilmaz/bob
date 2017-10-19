@@ -48,6 +48,7 @@ Sample configuration.
 ---------------------
 This is a sample configuration for a project named myproject that gets downloaded from github and pushed to dockerhub yilmazhuseyin/myproject
 In .bash_profile:
+
 ::
 
    $ BOB_DOCKER_OWNER='yilmazhuseyin'
@@ -59,6 +60,7 @@ In .bash_profile:
  After this configuration I can do following calls
 
 ::
+
    # Download and build yilmazhuseyin/myproject:master image from master branch.
    $ bob --name=myproject --branch=master
    # Download and build yilmazhuseyin/myproject:latest image from master branch.
