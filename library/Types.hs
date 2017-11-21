@@ -2,6 +2,7 @@ module Types(BobInput(..),
              BobEnv(..)) where
 
 import Data.Text (Text)
+import Turtle
 
 -- input fields
 --------------
@@ -21,6 +22,7 @@ data BobInput = BobInput {
   name :: Text,
   branch :: Text,
   repoUrl :: Maybe Text,
+  repoUpdatePath :: Maybe Turtle.FilePath,
   dockerName :: Maybe Text,
   dockerOwner :: Maybe Text,
   dockerTag :: Maybe Text,
@@ -29,6 +31,7 @@ data BobInput = BobInput {
 
 data BobEnv = BobEnv {
   repoUrl :: Maybe Text,
+  repoUpdatePath :: Maybe Turtle.FilePath,
   dockerOwner :: Maybe Text,
   dockerFilePath :: Text
   } deriving (Show, Eq, Ord)

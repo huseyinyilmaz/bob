@@ -9,11 +9,15 @@ import System.Environment (lookupEnv)
 import Data.Monoid(First(..), (<>))
 import Data.Maybe(fromJust, fromMaybe)
 
+toFilePath :: Text -> Turtle.FilePath
+toFilePath = fromString . Text.unpack
+
 command :: Parser BobInput
 command = BobInput <$>
           (optText "name" 'n' "Git Project Name.") <*>
           (optText "branch" 'b' "Git Branch to use for build.") <*>
           (optional $ optText "repo-url" 'u' "URL for git repository.") <*>
+          (optional $ optPath "repo-update-path" 'p' "Path that will be coppied over downloaded repository.") <*>
           (optional $ optText "docker-name" 'n' "Project name on dockerhub.") <*>
           (optional $ optText "docker-owner" 'o' "User name on dockerhub.") <*>
           (optional $ optText "docker-tag" 't' "Docker tag for dockerhub.") <*>
@@ -26,13 +30,16 @@ getEnvironment n = do
   maybeDockerFilePath <- lookupEnvText (Text.unpack dockerFilePathVarName)
   putStrLn ("Attempting to get url from environment variable " <> (Text.unpack repoVarName))
   bobRepoUrl <- lookupEnvText $ Text.unpack $ repoVarName
+  bobRepoUpdatePathText <- lookupEnvText $ Text.unpack $ repoUpdateP
   return BobEnv {
     repoUrl=bobRepoUrl,
+    repoUpdatePath= fmap toFilePath bobRepoUpdatePathText,
     dockerOwner=maybeOwner,
     dockerFilePath=(fromMaybe n maybeDockerFilePath)
     }
   where
     repoVarName = "BOB_" <> (Text.toUpper n) <> "_REPO_URL"
+    repoUpdateP = "BOB_" <> (Text.toUpper n) <> "_REPO_UPDATE_PATH"
     dockerFilePathVarName = "BOB_" <> (Text.toUpper n) <> "_DOCKER_FILE_PATH"
     lookupEnvText = (fmap (fmap Text.pack)) . lookupEnv
 
@@ -52,8 +59,9 @@ readData = do
       bobBranch = branch bobCommand
   bobEnv <- getEnvironment bobName
   let bobRepoUrl = getFirstMaybe (repoUrl (bobCommand::BobInput)) (repoUrl (bobEnv::BobEnv))
+      bobRepoUpdatePath = getFirstMaybe (repoUpdatePath (bobCommand::BobInput)) (repoUpdatePath (bobEnv::BobEnv))
       bobDockerName = getFirstMaybe (dockerName bobCommand) (Just bobName)
       bobDockerTag = getFirstMaybe (dockerTag bobCommand) (Just bobBranch)
       bobDockerOwner = getFirstMaybe (dockerOwner (bobCommand::BobInput)) (dockerOwner (bobEnv::BobEnv))
       dockerRepo = bobDockerOwner <> "/" <> bobDockerName <> ":" <> bobDockerTag
-  buildRepo bobName bobBranch bobRepoUrl dockerRepo (dockerFilePath bobEnv) (pushFlag bobCommand)
+  buildRepo bobName bobBranch bobRepoUrl bobRepoUpdatePath dockerRepo (dockerFilePath bobEnv) (pushFlag bobCommand)
