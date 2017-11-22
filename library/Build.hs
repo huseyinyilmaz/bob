@@ -28,8 +28,8 @@ dockerBuild dockerUrl = stdout $ inproc "docker" ["build", ".", "--tag=" <> dock
 dockerPush :: Text -> IO()
 dockerPush dockerUrl = stdout $ inproc "docker" ["push", dockerUrl] empty
 
-buildRepo :: Text -> Text -> Text -> Turtle.FilePath -> Text -> Text  -> Bool -> IO ()
-buildRepo name branch repoUrl repoUpdatePath dockerUrl dockerFilePath pushFlag = do
+buildRepo :: Text -> Text -> Text -> (Maybe Turtle.FilePath) -> Text -> Text  -> Bool -> IO ()
+buildRepo name branch repoUrl maybeRepoUpdatePath dockerUrl dockerFilePath pushFlag = do
   homeDir <- getHomeDirectory
   let buildDir = fromString homeDir </> "build" </> (toFilePath name)
       projectDir = buildDir </> (toFilePath dockerFilePath)
@@ -40,7 +40,10 @@ buildRepo name branch repoUrl repoUpdatePath dockerUrl dockerFilePath pushFlag =
   gitClone repoUrl
   cd projectDir
   gitCheckout branch
-  cptree repoUpdatePath projectDir
+  case maybeRepoUpdatePath of
+    Just repoUpdatePath -> cptree repoUpdatePath projectDir
+    Nothing -> return ()
+  -- cptree repoUpdatePath projectDir
   dockerBuild dockerUrl
   rmtree projectDir
   when pushFlag $ dockerPush dockerUrl

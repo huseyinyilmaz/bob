@@ -59,7 +59,8 @@ readData = do
       bobBranch = branch bobCommand
   bobEnv <- getEnvironment bobName
   let bobRepoUrl = getFirstMaybe (repoUrl (bobCommand::BobInput)) (repoUrl (bobEnv::BobEnv))
-      bobRepoUpdatePath = getFirstMaybe (repoUpdatePath (bobCommand::BobInput)) (repoUpdatePath (bobEnv::BobEnv))
+      bobRepoUpdatePath = getFirst $ (First (repoUpdatePath (bobCommand::BobInput))) <>
+                                     (First (repoUpdatePath (bobEnv::BobEnv)))
       bobDockerName = getFirstMaybe (dockerName bobCommand) (Just bobName)
       bobDockerTag = getFirstMaybe (dockerTag bobCommand) (Just bobBranch)
       bobDockerOwner = getFirstMaybe (dockerOwner (bobCommand::BobInput)) (dockerOwner (bobEnv::BobEnv))
