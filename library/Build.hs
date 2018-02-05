@@ -2,6 +2,7 @@ module Build(buildRepo) where
 import System.Directory (getHomeDirectory)
 import qualified Data.Text as Text
 import Turtle
+import System.Random
 
 echoText :: Text -> IO ()
 echoText = echo . fromString . Text.unpack
@@ -31,7 +32,8 @@ dockerPush dockerUrl = stdout $ inproc "docker" ["push", dockerUrl] empty
 buildRepo :: Text -> Text -> Text -> (Maybe Turtle.FilePath) -> Text -> Text  -> Bool -> IO ()
 buildRepo name branch repoUrl maybeRepoUpdatePath dockerUrl dockerFilePath pushFlag = do
   homeDir <- getHomeDirectory
-  let buildDir = fromString homeDir </> "build" </> (toFilePath name)
+  num <- randomRIO ((1, 100000000000000000)::(Integer, Integer))
+  let buildDir = fromString homeDir </> "build" </> (toFilePath name) </> (fromString $ show num)
       projectDir = buildDir </> (toFilePath dockerFilePath)
   echoSummary
   rmIfExists buildDir

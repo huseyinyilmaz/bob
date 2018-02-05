@@ -41,6 +41,7 @@ library:
   dependencies:
   - base
   - turtle
+  - random
   - mtl
   - text
   - directory
