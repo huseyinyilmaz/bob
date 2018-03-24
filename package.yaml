@@ -1,6 +1,7 @@
 # This YAML file describes your package. Stack will automatically generate a
 # Cabal file when you run `stack build`. See the hpack website for help with
 # this file: <https://github.com/sol/hpack>.
+version: '1.0.0'
 benchmarks:
   bob-benchmarks:
     dependencies:
@@ -63,4 +64,3 @@ tests:
     - -with-rtsopts=-N
     main: Main.hs
     source-dirs: test-suite
-version: '0.0.0'
