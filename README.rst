@@ -1,6 +1,8 @@
 BOB
 ===
 
+|build|_
+
 Bob is a utility for:
 
 1) Downloading fresh copy of a repository.
@@ -67,3 +69,34 @@ With this configuration, I can do following calls:
    $ bob --name=myproject --branch=master --docker-tag=latest
    # Download and build yilmazhuseyin/myproject:latest image from master branch and push it to dockerhub
    $ bob --name=myproject --branch=master --docker-tag=latest --push
+
+How to get binary
+-----------------
+
+You can download the binary from `release page <https://github.com/huseyinyilmaz/bob/releases/>`_
+
+
+How to build
+------------
+
+In order to build, you need to have haskell-stack environment already installed
+
+::
+
+   # on mac:
+   $ brew install haskell-stack
+   # https://github.com/commercialhaskell/stack/blob/master/doc/install_and_upgrade.md
+
+After that, you can build and install the project:
+
+::
+
+   # to build:
+   $ stack build
+   # to install:
+   $ stack install
+
+This will install the binary on ~/.local/bin/bob folder you need to either carry your binary somewhere in your path or add ~/.local/bin directory to your path.
+
+.. |build| image:: https://travis-ci.org/huseyinyilmaz/bob.png
+.. _build: https://travis-ci.org/huseyinyilmaz/bob
