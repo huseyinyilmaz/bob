@@ -18,7 +18,7 @@ rmIfExists path = do
     else return ()
 
 gitClone :: Text -> IO()
-gitClone repo = stdout $ inproc "git" ["clone", repo] empty
+gitClone repo = stdout $ inproc "git" ["clone", "--recurse-submodules", repo] empty
 
 gitCheckout :: Text -> IO()
 gitCheckout branch = stdout $ inproc "git" ["checkout", branch] empty
